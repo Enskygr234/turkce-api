@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Türkçe API ❄️</title>
+<meta name="description" content="Ücretsiz Türkçe API: il plaka kodları, resmi tatiller, atasözleri JSON olarak; sayıyı yazıya çevirme, slug, harf dönüşümü ve şifre üretici araçları.">
+<style>
+  :root {
+    --bg: #f4f8fc; --card: #ffffff; --text: #14212e; --muted: #5b6b7b;
+    --line: #dbe5ef; --accent: #1f6fb2; --accent-soft: #e3f0fb; --code: #eef3f8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1520; --card: #142030; --text: #e6eef6; --muted: #93a4b5;
+      --line: #22344a; --accent: #6bb6f5; --accent-soft: #17304a; --code: #0f1a27;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 860px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 2rem; margin: 0 0 4px; }
+  h2 { font-size: 1.25rem; margin: 40px 0 12px; }
+  h3 { font-size: 1rem; margin: 0 0 10px; }
+  p.lead { color: var(--muted); margin: 0 0 8px; }
+  a { color: var(--accent); }
+  code { background: var(--code); padding: 1px 6px; border-radius: 5px; font-size: .9em; word-break: break-all; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  td { padding: 8px 6px; border-top: 1px solid var(--line); vertical-align: top; }
+  tr:first-child td { border-top: 0; }
+  td:first-child { width: 55%; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  input, select, button {
+    font: inherit; color: var(--text); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
+  }
+  input { flex: 1 1 200px; min-width: 0; }
+  button { background: var(--accent); color: #fff; border-color: var(--accent); cursor: pointer; }
+  @media (prefers-color-scheme: dark) { button { color: #0d1520; } }
+  output { display: block; margin-top: 10px; padding: 10px; background: var(--accent-soft); border-radius: 8px; min-height: 1.5em; word-break: break-word; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+  .grid .card { margin: 0; }
+  footer { margin-top: 48px; color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Türkçe API ❄️</h1>
+  <p class="lead">Ücretsiz, anahtar gerektirmeyen Türkçe veri ve araçlar. Kaynak kodu <a href="https://github.com/Enskygr234/turkce-api">GitHub'da</a>.</p>
+
+  <h2>JSON uç noktaları</h2>
+  <div class="card">
+    <table id="endpoints">
+      <tr><td><a data-api="api/iller.json"><code>api/iller.json</code></a></td><td>81 il ve plaka kodları</td></tr>
+      <tr><td><a data-api="api/iller/34.json"><code>api/iller/34.json</code></a></td><td>Plaka koduna göre il (<code>34</code> veya <code>06</code>)</td></tr>
+      <tr><td><a data-api="api/iller/izmir.json"><code>api/iller/izmir.json</code></a></td><td>Ada göre il (Türkçe karaktersiz küçük harf)</td></tr>
+      <tr><td><a data-api="api/tatiller/2026.json"><code>api/tatiller/2026.json</code></a></td><td>Sabit tarihli resmi tatiller (2017–2100, dini bayramlar hariç)</td></tr>
+      <tr><td><a data-api="api/atasozleri.json"><code>api/atasozleri.json</code></a></td><td>Atasözleri ve anlamları</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Örnek kullanım</h3>
+    <code id="fetch-example"></code>
+  </div>
+
+  <h2>Araçlar</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Sayıyı yazıya çevir</h3>
+      <div class="row">
+        <input id="yazi-in" value="1907.19" inputmode="decimal" aria-label="Sayı veya tutar">
+        <select id="yazi-tip" aria-label="Tür"><option value="tutar">Tutar (TL)</option><option value="sayi">Sayı</option></select>
+      </div>
+      <output id="yazi-out"></output>
+    </div>
+
+    <div class="card">
+      <h3>Metin dönüştür</h3>
+      <div class="row">
+        <input id="metin-in" value="Çığ Düştü, İşte Öyle!" aria-label="Metin">
+        <select id="metin-tip" aria-label="Dönüşüm">
+          <option value="slug">Slug</option><option value="buyuk">BÜYÜK</option>
+          <option value="kucuk">küçük</option><option value="baslik">Başlık</option><option value="istatistik">İstatistik</option>
+        </select>
+      </div>
+      <output id="metin-out"></output>
+    </div>
+
+    <div class="card">
+      <h3>Şifre üret</h3>
+      <div class="row">
+        <input id="sifre-len" type="number" min="4" max="128" value="16" aria-label="Uzunluk" style="flex: 0 0 90px">
+        <label><input type="checkbox" id="sifre-sym" checked style="flex:none"> Sembol</label>
+        <button id="sifre-btn">Üret</button>
+      </div>
+      <output id="sifre-out"></output>
+    </div>
+
+    <div class="card">
+      <h3>Rastgele atasözü</h3>
+      <button id="soz-btn">Yeni atasözü</button>
+      <output id="soz-out"></output>
+    </div>
+  </div>
+
+  <footer>MIT lisanslı · Veriler elle derlenmiştir; resmi işlemlerde ilgili kurumun kaynağını esas alın.</footer>
+</main>
+
+<script type="module">
+  import { numberToWords, amountToWords } from './lib/yaziyla.js';
+  import { slugify, upper, lower, title, stats } from './lib/metin.js';
+  import { generatePassword } from './lib/sifre.js';
+  import { randomAtasozu } from './lib/atasozleri.js';
+
+  const $ = (id) => document.getElementById(id);
+  const base = new URL('.', location.href).href;
+
+  document.querySelectorAll('[data-api]').forEach((a) => (a.href = base + a.dataset.api));
+  $('fetch-example').textContent = `fetch("${base}api/iller/34.json").then(r => r.json())`;
+
+  function yazi() {
+    const v = $('yazi-in').value.trim();
+    try {
+      if ($('yazi-tip').value === 'tutar') $('yazi-out').textContent = amountToWords(v);
+      else if (/^-?\d{1,18}$/.test(v)) $('yazi-out').textContent = numberToWords(v);
+      else throw new Error('Tam sayı girin (en fazla 18 hane)');
+    } catch (e) { $('yazi-out').textContent = '⚠ ' + e.message; }
+  }
+
+  function metin() {
+    const v = $('metin-in').value;
+    const fn = { slug: slugify, buyuk: upper, kucuk: lower, baslik: title }[$('metin-tip').value];
+    if (fn) return ($('metin-out').textContent = fn(v));
+    const s = stats(v);
+    $('metin-out').textContent = `${s.characters} karakter · ${s.words} kelime · ${s.sentences} cümle · ~${s.readingTimeSeconds} sn okuma`;
+  }
+
+  function sifre() {
+    try {
+      $('sifre-out').textContent = generatePassword({ length: Number($('sifre-len').value), symbols: $('sifre-sym').checked });
+    } catch (e) { $('sifre-out').textContent = '⚠ ' + e.message; }
+  }
+
+  function soz() {
+    const { soz, anlam } = randomAtasozu();
+    $('soz-out').innerHTML = '';
+    $('soz-out').append(Object.assign(document.createElement('strong'), { textContent: soz }), document.createElement('br'), anlam);
+  }
+
+  ['yazi-in', 'yazi-tip'].forEach((id) => $(id).addEventListener('input', yazi));
+  ['metin-in', 'metin-tip'].forEach((id) => $(id).addEventListener('input', metin));
+  $('sifre-btn').addEventListener('click', sifre);
+  $('soz-btn').addEventListener('click', soz);
+  yazi(); metin(); sifre(); soz();
+</script>
+</body>
+</html>

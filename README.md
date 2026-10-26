@@ -2,7 +2,27 @@
 
 Türkçe'ye özel, ücretsiz ve bağımlılığı az bir yardımcı API. [Hono](https://hono.dev) ile yazıldı; Node.js'te veya Vercel'de çalışır.
 
-## Uç noktalar
+**🔗 Canlı: https://enskygr234.github.io/turkce-api/**
+
+## GitHub Pages (statik JSON)
+
+Anahtar gerektirmez, doğrudan `fetch` ile kullanılır:
+
+| Adres | İçerik |
+|---|---|
+| [`/api/iller.json`](https://enskygr234.github.io/turkce-api/api/iller.json) | 81 il ve plaka kodları |
+| [`/api/iller/34.json`](https://enskygr234.github.io/turkce-api/api/iller/34.json) | Plaka koduna göre il (`34`, `06`) |
+| [`/api/iller/izmir.json`](https://enskygr234.github.io/turkce-api/api/iller/izmir.json) | Ada göre il (Türkçe karaktersiz küçük harf) |
+| [`/api/tatiller/2026.json`](https://enskygr234.github.io/turkce-api/api/tatiller/2026.json) | Sabit tarihli resmi tatiller (2017–2100) |
+| [`/api/atasozleri.json`](https://enskygr234.github.io/turkce-api/api/atasozleri.json) | Atasözleri ve anlamları |
+
+```js
+const il = await fetch('https://enskygr234.github.io/turkce-api/api/iller/34.json').then((r) => r.json());
+```
+
+Sayıyı yazıya çevirme, metin dönüştürme ve şifre üretme araçları sitede tarayıcı içinde çalışır.
+
+## Sunucu sürümü uç noktaları
 
 | Uç nokta | Ne yapar |
 |---|---|

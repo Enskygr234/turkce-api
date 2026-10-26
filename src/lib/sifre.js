@@ -1,5 +1,13 @@
-// Kriptografik olarak güvenli şifre üretici.
-import { randomInt } from 'node:crypto';
+// Kriptografik olarak güvenli şifre üretici. Hem Node.js'te hem tarayıcıda çalışır.
+
+// [0, max) aralığında eşit dağılımlı rastgele tam sayı (modulo sapması olmadan)
+function randomInt(max) {
+  const limit = Math.floor(0x100000000 / max) * max;
+  const buf = new Uint32Array(1);
+  do globalThis.crypto.getRandomValues(buf);
+  while (buf[0] >= limit);
+  return buf[0] % max;
+}
 
 const SETS = {
   lower: 'abcdefghijkmnopqrstuvwxyz',
