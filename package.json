@@ -1,0 +1,20 @@
+{
+  "name": "turkce-api",
+  "version": "1.0.0",
+  "description": "Türkçe ücretsiz yardımcı API: sayıyı yazıya çevirme, Türkçe slug ve harf dönüşümü, il plaka kodları, resmi tatiller, atasözleri, şifre ve UUID üretici.",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@hono/node-server": "^2.1.5",
+    "hono": "^4.13.14"
+  }
+}
